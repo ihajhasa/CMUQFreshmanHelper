@@ -1,0 +1,1 @@
+This is my 15112 python assignment. My project is applying machine learning to be able to identify genres of certain songs. In addition, it will recommend music from the same genre that sound similar to the song the user submitted.
