@@ -2,8 +2,10 @@ from Tkinter import *
 from PIL import Image, ImageTk
 
 class dormLifeProgram():
-    
+    #Creates the Dorm Life Frame
     def __init__(self, master):
+
+        #Create widgets
         self.frame = Frame(master)
         self.frame.config(width = 1250, height = 940)
 
@@ -22,9 +24,9 @@ class dormLifeProgram():
         self.cookingIcon = ImageTk.PhotoImage(Image.open('IconImages/cookingIcon.jpg'))
         self.cookingBtn.config(image = self.cookingIcon)
 
+        #Displaying them is done in main Code
+
+    #Gets the frame feature of dorm life
     def getFrame(self):
         return self.frame
-
-    def getOpenDormLifeFrames(self):
-        return self.openDormLifeFrames
 

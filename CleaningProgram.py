@@ -7,6 +7,7 @@ class CleaningProgram:
 
     def __init__(self, dormFrame):
 
+        #Retieves absolute location of claender and displays it
         def displayLargerImage(e):
             if (e.x >= 16 and e.y>= 133) and (e.x <= 139 and e.y <=293):
                 #Get path to the image
@@ -19,15 +20,18 @@ class CleaningProgram:
                 
                 webbrowser.open_new_tab(url)
 
+        #Cretaes a new tab to go to wikiHow's page
         def goToWikiHowCleaning():
             url = 'http://www.wikihow.com/Clean-Your-Room'
             webbrowser.open_new_tab(url)
 
+        #Cretaes a new tab to go to about housecleaning's page
         def goToAHK():
             url = 'http://housekeeping.about.com/od/roombyroomguide/ht/intensedorm.htm'
             webbrowser.open_new_tab(url)
 
 
+        #Establish all widgets
         
         self.frame = Frame(dormFrame)
 
@@ -44,7 +48,7 @@ class CleaningProgram:
         self.link2 = Button(self.frame, image = self.AHK, command = goToAHK)
 
         
-
+        #Everything is displayed, except for the frame itself
         self.LabelImage.grid(row = 0, rowspan = 3, column = 0, columnspan = 2)
         self.splitFrame.grid(row = 1, column = 2)
         self.link1.grid(row = 0, column = 2)
