@@ -1,5 +1,7 @@
 from Tkinter import *
+import PIL
 from PIL import Image, ImageTk
+
 
 #My other functions
 import dormLife as DL
@@ -7,7 +9,8 @@ import LaundryProgram as LP
 import CleaningProgram as CP
 import CookingProgram as CKP
 import CMUMap as Map
-
+import imp
+import CookingProg as CookingProg
 #Dorm Life------------------------------------------------------------------------------------------------
 
 #Laundy Part of the Program ------------------------------------------------------------------------------
@@ -51,7 +54,7 @@ def CleaningProgram(openDormLifeFrames):
 
 #----------------------------------------------------------------------------------------------------------
 #Cooking Part of the Program -----------------------------------------------------------------------------
-        
+    '''
 def CookingProgram(openDormLifeFrames):
     global openFrames
     #Clear all frames from the screen(in dormlife)
@@ -67,7 +70,18 @@ def CookingProgram(openDormLifeFrames):
     #Display Frame
     openDormLifeFrames['Cooking'].frame.grid(row = 0, rowspan = 4, column = 2)
 
+'''
+def cookingProgram(openDormLifeFrames):
+    global openFrames
+    #Clear all frames from the screen(in dormlife)
+    for i in openDormLifeFrames:
+        openDormLifeFrames[i].frame.grid_forget()
+    if 'Cooking' not in openDormLifeFrames:
+        dormsFrame = openFrames['DormLife'].getFrame()
+        openDormLifeFrames['Cooking'] = CookingProg.CookingProg(dormsFrame)
 
+
+    openDormLifeFrames['Cooking'].frame.grid(row = 0, rowspan = 4, column = 2)
 #----------------------------------------------------------------------------------------------------------
 
 #Executes the dorm life program
@@ -92,7 +106,7 @@ def executeDormLifeProg():
         #Adds Functionality to the buttons, because the execution functions are in this file
         openFrames['DormLife'].laundryBtn.config(command = lambda frames = openDormLifeFrames: LaundryProgram(frames))
         openFrames['DormLife'].cleaningBtn.config(command = lambda frames = openDormLifeFrames: CleaningProgram(frames))
-        openFrames['DormLife'].cookingBtn.config(command = lambda frames = openDormLifeFrames: CookingProgram(frames))
+        openFrames['DormLife'].cookingBtn.config(command = lambda frames = openDormLifeFrames: cookingProgram(frames))
 
     #Display all the widgets inside the frame (Buttons, labels, etc...)
         openFrames['DormLife'].title.grid(row = 0, column = 1)
