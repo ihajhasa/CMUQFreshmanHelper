@@ -5,6 +5,25 @@ import os
 import Tkinter as TK
 import webbrowser
 
+from math import radians, cos, sin, asin, sqrt
+
+#http://stackoverflow.com/questions/15736995/how-can-i-quickly-estimate-the-distance-
+#between-two-latitude-longitude-points
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    km = 6367 * c
+    return km
+
 
 class Restaurant:
 
@@ -20,11 +39,14 @@ class Restaurant:
         self.address = address
         #After the 25th Character, it will find the next comma, then add a \n to make the address more compact
         if address != 'Not Available' and len(address) > 25:
-            i = 25
-            while i < len(self.address) and self.address[i] != ',':
+            i = 20
+            while i < len(self.address):
+                if self.address[i] == ',':
+                    self.address = self.address[:i+1] + '\n' + self.address[i+1:]
+                    i = i + 17
                 i = i + 1
-            if i+1 != len(self.address):
-                self.address = self.address[:i+1] + '\n' + self.address[i+1:]
+            
+                
         self.phoneNum = phoneNum
         self.longitude = lon
         self.latitude = lat
@@ -47,16 +69,16 @@ class Restaurant:
         return self.address
 
     def __str__(self):
-        return self.name + '\n' +  self.address + '\n' +  self.phoneNum + '\n' +  self.longitude+ '\n' +  self.latitude
+        distance = haversine(51.446, 25.3106, float(self.longitude), float(self.latitude))
+        return self.name + '\n' +  self.address + '\n' +  self.phoneNum + '\n' + "Distance: " + str(distance)[:4] + 'km'
 
     def t(e, link):
-        print link
         webbrowser.open_new_tab(link)
 
     def makeThumbnail(self, window):
-        print self.thumbnail, self.name, self.URL
         self.frame = TK.Frame(window)
-        self.frame.config(bd = 10, highlightbackground='blue')
+        self.frame.config(width = 10000, height = 10000)
+        self.frame.config(bd = 10, relief = GROOVE)
         self.label1 = TK.Label(self.frame)
 
 
@@ -72,7 +94,7 @@ class Restaurant:
 
         self.label1.pack()
         self.label2.pack()
-        
+
         
         
         
