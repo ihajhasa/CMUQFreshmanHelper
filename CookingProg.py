@@ -2,12 +2,10 @@ from Tkinter import *
 import random
 import ZomatoAPIHandler as ZomatoAPI
 import Restaurant as R
+import tkMessageBox as MB
 
-def getID(categoryReq, options):
-    for category in options:
-        if category['name'] == categoryReq:
-            return category['id']
-
+def hideElements(restaurant):
+    restaurant.frame.grid_forget()
 
 def getRequestCategory(categoryReq, options, canvas, request):
     for i in request:
@@ -18,13 +16,19 @@ def getRequestCategory(categoryReq, options, canvas, request):
     results = ZomatoAPI.search(url)
     displayInit =  prepareRestaurants(Restaurants = results, canvas = canvas)
     i = 1
-    for choice in displayInit:
-        choice.frame.grid(row = 4, column = i)
-        request += [choice]
-        i += 1
-        
-    
-    
+    print displayInit
+    if displayInit != []:
+        for choice in displayInit:
+            choice.frame.grid(row = 4, column = i)
+            request += [choice]
+            i += 1
+    else:
+        MB.showerror(title = 'No Results', message = 'There are no restaurants that fit this category.')
+
+def getID(categoryReq, options):
+    for category in options:
+        if category['name'] == categoryReq:
+            return category['id']
 
 
 def prepareRestaurants(Restaurants = ZomatoAPI.nearbyRestaurants(), canvas = '', num = 3):
@@ -106,11 +110,16 @@ class CookingProg:
                                                                       self.miniSearch,
                                                                       self.canvas,
                                                                       self.request))        
+
+        clearRequestBtn = Button(self.canvas, text = "Clear results",
+                                      command = lambda : map(hideElements, self.request))
+
         
         self.categoryListBox.pack()
         self.searchLabel.grid(row = 3, column = 0, columnspan = 4)
         self.listBoxCanvas.grid(row = 4, column = 0)
         sendRequestBtn.grid(row = 5, column = 0)
+        clearRequestBtn.grid(row = 5, column = 2)
         
         
         self.canvas.pack()

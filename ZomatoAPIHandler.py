@@ -6,7 +6,11 @@ from Restaurant import Restaurant
 def search(url):
     global request_headers
 
-    request = urllib2.Request(url, headers=request_headers)
+
+    try:
+        request = urllib2.Request(url, headers=request_headers)
+    except urllib2.HTTPError:
+        print 'There was an error with the request'
     response = urllib2.urlopen(request).read()
     response = ast.literal_eval(response)
     response = response['restaurants']

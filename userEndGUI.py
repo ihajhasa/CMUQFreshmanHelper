@@ -16,7 +16,7 @@ import CookingProg as CookingProg
 #Def Return:
 def Return():
     global openFrames
-    global welcomeFrame
+    global welcomeFrame5
     global buttonsFrame
     for frame in openFrames:
         openFrames[frame].frame.grid_forget()
@@ -24,7 +24,7 @@ def Return():
     welcomeFrame.grid(row = 0, rowspan = 4, column = 2)
     
     
-#Dorm Life------------------------------------------------------------------------------------------------
+#Dorm Life---------------------------------------------------------------5---------------------------------
 
 #Laundy Part of the Program ------------------------------------------------------------------------------
 
