@@ -1,6 +1,6 @@
 from Tkinter import *
-import PIL
 from PIL import Image, ImageTk
+import getCarrefourPromotions
 
 
 #My other functions
@@ -11,26 +11,36 @@ import CookingProgram as CKP
 import CMUMap as Map
 import imp
 import CookingProg as CookingProg
+import BuyingLife as BL
 
+def printCoor(e):
+    print e.x, e.y
 
-#Def Return:
+#Returns to the main page
 def Return():
+    global mainWnd
     global openFrames
     global welcomeFrame5
     global buttonsFrame
+    global spaceFrame
+
+    spaceFrame.grid(row = 0, column = 0)
+    mainWnd.geometry('1500x1500')
+    mainWnd.config(bg = 'white')
     for frame in openFrames:
         openFrames[frame].frame.grid_forget()
     buttonsFrame.grid(row = 1, rowspan = 3, column = 1)
     welcomeFrame.grid(row = 0, rowspan = 4, column = 2)
     
     
-#Dorm Life---------------------------------------------------------------5---------------------------------
+#Dorm Life------------------------------------------------------------------------------------------------
 
 #Laundy Part of the Program ------------------------------------------------------------------------------
 
 #Displays the Laundry life Frame
 def LaundryProgram(openDormLifeFrames):
     global openFrames
+    global mainWnd
 
     #Clear all frames in dorm life to create an open space for this frame
     for i in openDormLifeFrames:
@@ -44,12 +54,12 @@ def LaundryProgram(openDormLifeFrames):
     #If IF statement is skipped, that means the frame has already been made and established
 
     #Display frame
-    openDormLifeFrames['Laundry'].frame.grid(row = 0, rowspan = 4, column = 2)    
+    openDormLifeFrames['Laundry'].frame.grid(row = 0, rowspan = 6, column = 3)    
 #----------------------------------------------------------------------------------------------------------
 #Cleaning Part of the Program -----------------------------------------------------------------------------
 
 #Displays the Cleaning Life Frame
-def CleaningProgram(openDormLifeFrames):
+def CleaningProgram(openDormLifeFrames, ):
     global openFrames
 
     #Clear all frames from the screen (in dormlife)
@@ -61,14 +71,15 @@ def CleaningProgram(openDormLifeFrames):
         dormsFrame = openFrames['DormLife'].getFrame()
         openDormLifeFrames['Cleaning'] = CP.CleaningProgram(dormsFrame)
     #Display the frame
-    openDormLifeFrames['Cleaning'].frame.grid(row = 0, rowspan = 4, column = 2)
+    openDormLifeFrames['Cleaning'].frame.grid(row = 0, rowspan = 4, column = 3)
 
 
 #----------------------------------------------------------------------------------------------------------
 #Cooking Part of the Program -----------------------------------------------------------------------------
 
-def cookingProgram(openDormLifeFrames):
+def cookingProgram(openDormLifeFrames, space):
     global openFrames
+    space.grid_forget()
     #Clear all frames from the screen(in dormlife)
     for i in openDormLifeFrames:
         openDormLifeFrames[i].frame.grid_forget()
@@ -76,7 +87,7 @@ def cookingProgram(openDormLifeFrames):
         dormsFrame = openFrames['DormLife'].getFrame()
         openDormLifeFrames['Cooking'] = CookingProg.CookingProg(dormsFrame)
 
-    openDormLifeFrames['Cooking'].frame.grid(row = 0, rowspan = 4, column = 2)
+    openDormLifeFrames['Cooking'].frame.grid(row = 0, rowspan = 4, column = 3)
     
 #----------------------------------------------------------------------------------------------------------
 
@@ -102,11 +113,13 @@ def executeDormLifeProg():
         openFrames['DormLife'] = DL.dormLifeProgram(mainWnd) #Create the program
         
         #Adds Functionality to the buttons, because the execution functions are in this file
-        openFrames['DormLife'].laundryBtn.config(command = lambda frames = openDormLifeFrames: LaundryProgram(frames))
-        openFrames['DormLife'].cleaningBtn.config(command = lambda frames = openDormLifeFrames: CleaningProgram(frames))
-        openFrames['DormLife'].cookingBtn.config(command = lambda frames = openDormLifeFrames: cookingProgram(frames))
+        openFrames['DormLife'].laundryBtn.config(command = lambda frames = openDormLifeFrames : LaundryProgram(frames))
+        openFrames['DormLife'].cleaningBtn.config(command = lambda frames = openDormLifeFrames : CleaningProgram(frames))
+        openFrames['DormLife'].cookingBtn.config(command = lambda frames = openDormLifeFrames, spaceFrame = openFrames['DormLife'].spaceFrame: cookingProgram(frames, spaceFrame))
 
     #Display all the widgets inside the frame (Buttons, labels, etc...)
+        openFrames['DormLife'].InstructionalFrame.grid(row = 1, rowspan = 3, column = 0)
+        openFrames['DormLife'].spaceFrame.grid(row = 0, column = 2)
         openFrames['DormLife'].title.grid(row = 0, column = 1)
         openFrames['DormLife'].laundryBtn.grid(row = 1, column = 1)
         openFrames['DormLife'].cleaningBtn.grid(row = 2, column = 1)
@@ -114,14 +127,45 @@ def executeDormLifeProg():
 
     #Return Button
         returnButton = Button(openFrames['DormLife'].frame, text = "Return to Main Menu", command = Return)
-        returnButton.grid(row = 4, column = 1)
+        returnButton.grid(row = 4, column = 1, pady = 5)
 
     
         
   #Display the frame
-    openFrames['DormLife'].frame.grid(row = 0, rowspan = 4, column = 1)
+    openFrames['DormLife'].frame.grid(row = 0, rowspan = 4, column = 3)
 
 #----------------------------------------------------------------------------------------------------------
+#Open the buying life program
+def executeBL():
+    global mainWnd
+    global openFrames
+    global buttonsFrame
+    global spaceFrame
+
+    #Hide all the other frames
+    welcomeFrame.grid_forget()
+    buttonsFrame.grid_forget()
+    spaceFrame.grid_forget()
+    for someframe in openFrames:
+            openFrames[someframe].frame.grid_forget()
+
+    
+    #If not open
+    if 'BuyingLife' not in openFrames:
+        openFrames['BuyingLife'] = BL.BuyingLife(mainWnd) #Open It
+        openFrames['BuyingLife'].frame.grid(row = 0, rowspan = 4, column = 1) #Display It
+        #Create reurn to menu button
+        returnButton = Button(openFrames['BuyingLife'].frame, text = "Return to Main Menu", command = Return)
+        returnButton.pack()
+
+    else:
+        #adjust geometry of window to thatwanted by the program
+        mainWnd.geometry('1325x890')
+        mainWnd.config(bg = 'white')
+        #Display the frame
+        openFrames['BuyingLife'].frame.grid(row = 0, rowspan = 4, column = 1)
+
+    
 #----------------------------------------------------------------------------------------------------------
 
 #Cmu Campus Map -------------------------------------------------------------------------------------------
@@ -130,23 +174,31 @@ def executeCampusLife():
     global mainWnd
     global openFrames
     global buttonsFrame
+    global spaceFrame
 
-    
+    #GHide all other elements
     welcomeFrame.grid_forget()
     buttonsFrame.grid_forget()
-
-    
+    spaceFrame.grid_forget()
     for someframe in openFrames:
             openFrames[someframe].frame.grid_forget()
-    
+
+            
+    #If not open
     if 'CampusLife' not in openFrames:
-        openFrames['CampusLife'] = Map.CMUMap(mainWnd)
-        openFrames['CampusLife'].frame.grid(row = 0, rowspan = 4, column = 1)
+        openFrames['CampusLife'] = Map.CMUMap(mainWnd) #Open
+        openFrames['CampusLife'].frame.grid(row = 0, rowspan = 4, column = 1) #Display
+        #Create a return to menu button
+        returnButton = Button(openFrames['CampusLife'].frame, text = "Return to Main Menu", command = Return)
+        returnButton.grid(row = 4, column = 2)
     else:
+        #Adjust properties of the window to suit that required by the program
+        mainWnd.geometry('1325x950')
+        mainWnd.config(bg = 'black')
+        #Display it
         openFrames['CampusLife'].frame.grid(row = 0, rowspan = 4, column = 1)
 
-    returnButton = Button(openFrames['CampusLife'].frame, text = "Return to Main Menu", command = Return)
-    returnButton.grid(row = 4, column = 2)
+    
 
 
 
@@ -187,10 +239,10 @@ dormLife = Button(buttonsFrame, command = executeDormLifeProg)
 dormIcon = ImageTk.PhotoImage(Image.open('IconImages/dormButton1.jpg'))
 dormLife.config(padx = 5, image = dormIcon)
 
-#Button 2 - This, when clicked, will execute the Cleaning Life Program
+#Button 2 - This, when clicked, will execute the buying Life Program
 buyingLife = Button(buttonsFrame)
 buyingIcon = ImageTk.PhotoImage(Image.open('IconImages/CarrefourLuluButton.jpg'))
-buyingLife.config(padx = 5, image = buyingIcon)
+buyingLife.config(padx = 5, image = buyingIcon, command = executeBL)
 
 #Button 3 - This, when clicked, will execute the Campus Life Program
 CMUQMap = Button(buttonsFrame, command = executeCampusLife)
@@ -225,6 +277,7 @@ buttonsFrame.grid(row = 1, rowspan = 3, column = 1)
 welcomeFrame.grid(row = 0, rowspan = 4, column = 2)
 #welcomeFrame.config( padx = 10, relief = GROOVE)
 welcomeTextLabel.pack()
+welcomeTextLabel.bind('<Button-1>', printCoor)
 
 #Dictionary that will contain reference to all the programs (Dorm life, Campus Life, Cleaning Life)
 openFrames = {}

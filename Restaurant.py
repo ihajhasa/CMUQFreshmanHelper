@@ -56,32 +56,20 @@ class Restaurant:
         self.label1 = ''
         self.label2 = ''
         
-
-    def getName(self):
-        return self.name
-    def getThumbnail(self):
-        return self.thumbnail
-    def getPhoneNum(self):
-        return self.phoneNum
-    def getLocation(self):
-        return (self.longitude, self.latitude)
-    def getAddress(self):
-        return self.address
-
+    #Gets a string representation of the restaurant object
     def __str__(self):
         distance = haversine(51.446, 25.3106, float(self.longitude), float(self.latitude))
         return self.name + '\n' +  self.address + '\n' +  self.phoneNum + '\n' + "Distance: " + str(distance)[:4] + 'km'
 
-    def t(e, link):
-        webbrowser.open_new_tab(link)
-
+    #Create a frame and widgets for this restaurant, in order it for it to be presented visually
     def makeThumbnail(self, window):
+        #Create frame
         self.frame = TK.Frame(window)
         self.frame.config(width = 10000, height = 10000)
         self.frame.config(bd = 10, relief = GROOVE)
         self.label1 = TK.Label(self.frame)
 
-
+        #Get image of restaurant (given to us by Zomato) and display it in a label
         image = Image.open(self.thumbnail)
         image = ImageTk.PhotoImage(image.resize((200,200), Image.ANTIALIAS))
         self.image = image
@@ -89,7 +77,7 @@ class Restaurant:
 
         self.label1.config(image = self.image)
         
-        
+        #This essentially gets the __str__ which is what is displayed under the image
         self.label2 = TK.Label(self.frame, text = self.__str__())
 
         self.label1.pack()
