@@ -71,7 +71,7 @@ def drawShape(current, maps, section, c):
             
             #Wait 13 sseconds, which is the amount of time needed for the animation transition to end to re-execute the drawshape function
                 #Since we are on the correct map, then there is no need to transition to another map
-            executeDelay = Timer(13, lambda : drawShape(current, maps, section, c))
+            executeDelay = Timer(13.2, lambda : drawShape(current, maps, section, c))
             executeDelay.start()
         else:
             #Clear any previously drawn things
@@ -136,7 +136,7 @@ def drawShape(current, maps, section, c):
             switchFloor(maps, c, current, 'F1')
             
             #Re-execute the same drawShape function, but after 13 seconds, which is when the animation finishes
-            executeDelay = Timer(13, lambda : drawShape(current, maps, section, c))
+            executeDelay = Timer(13.2, lambda : drawShape(current, maps, section, c))
             executeDelay.start()
         else:
             #Clear any previously drawn shapes
